@@ -36,8 +36,8 @@ def context_spark():
 	
 	hadoopConf = sc._jsc.hadoopConfiguration()
 	hadoopConf.set("fs.s3a.canned.acl", "BucketOwnerFullControl")
-	hadoopConf.set("fs.s3a.awsAccessKeyId", "AKIAXCVNOCMJCZTV7IWP")
-	hadoopConf.set("fs.s3a.awsSecretAccessKey", "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")
+	hadoopConf.set("fs.s3a.awsAccessKeyId", "---")
+	hadoopConf.set("fs.s3a.awsSecretAccessKey", "---")
 	hadoopConf.set("fs.s3a.endpoint", "s3.us-east-1.amazonaws.com")
 	hadoopConf.set("com.amazonaws.services.s3a.enableV4", "true")
 	hadoopConf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
@@ -68,7 +68,7 @@ def toCSVLine(data):
 	 
 def prep_overview(sql):
 	spark = init_spark()
-	lines = sql.read.text("s3a://max01bb/trans_ovrw.dat").rdd
+	lines = sql.read.text("s3a://---").rdd
 	#lines = spark.read.text("/Users/Max/Desktop/Bitcoin-Project/trans_ovrw.dat").rdd
 	#lines = spark.read.text("./data/plants.data").rdd
 	lines = lines.map(lambda row: row.value.split("\t"))
@@ -100,7 +100,7 @@ def to_time(timestamp):
 
 def prep_block(sql):
 	spark = init_spark()
-	lines = sql.read.text("s3a://max01bb/blocks.dat").rdd
+	lines = sql.read.text("s3a://---").rdd
 	#lines = spark.read.text("./data/plants.data").rdd
 	lines = lines.map(lambda row: row.value.split("\t"))
 	
@@ -119,7 +119,7 @@ block = prep_block(sql)
 
 def prep_inputs(sql,prep,block):
 	spark = init_spark()
-	lines = spark.read.text("s3a://max01bb/trans_in.dat").rdd
+	lines = spark.read.text("s3a://---").rdd
 	#lines = spark.read.text("/Users/Max/Desktop/Bitcoin-Project/1M_trans_in.dat").rdd
 	#lines = spark.read.text("./data/plants.data").rdd
 	lines = lines.map(lambda row: row.value.split("\t"))
@@ -167,7 +167,7 @@ date = "2016"
 fi = input.filter( input.year == date)
 
 fi.show()
-fi.repartition(1).write.parquet("s3a://max01bb/input_modify_"+date)
+fi.repartition(1).write.parquet("s3a://---"+date)
 
 SparkContext.stop(sc)
 print(datetime.fromtimestamp(time.time()))

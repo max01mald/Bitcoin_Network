@@ -37,8 +37,8 @@ def context_spark():
 	sql = SQLContext(sc)
 	
 	hadoopConf = sc._jsc.hadoopConfiguration()
-	hadoopConf.set("fs.s3a.awsAccessKeyId", "AKIAXCVNOCMJCZTV7IWP")
-	hadoopConf.set("fs.s3a.awsSecretAccessKey", "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")
+	hadoopConf.set("fs.s3a.awsAccessKeyId", "---")
+	hadoopConf.set("fs.s3a.awsSecretAccessKey", "---")
 	hadoopConf.set("fs.s3a.endpoint", "s3.us-east-1.amazonaws.com")
 	hadoopConf.set("com.amazonaws.services.s3a.enableV4", "true")
 	hadoopConf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
@@ -127,7 +127,7 @@ def Day(string):
 
 def	conv_book():
 	spark = init_spark()
-	lines = spark.read.text("s3a://max01bb/book.csv").rdd
+	lines = spark.read.text("s3a://---").rdd
 	#lines = spark.read.text("/Users/Max/Desktop/Bitcoin-Project/BTC-USD.csv").rdd
 	#lines = spark.read.text("./data/plants.data").rdd
 	lines = lines.map(lambda row: row.value.split(","))
@@ -197,7 +197,7 @@ sql = context_spark()
 spark = init_spark()
 
 
-input = sql.read.parquet("s3a://max01bb/input_modify_"+date)
+input = sql.read.parquet("s3a://---"+date)
 input = input.rdd.map(lambda p: ((p[0],p[2],p[3],p[4],p[5]),(p[8],p[9])))
 #txID|prev_txID|blockID|year|month|day|n_inputs|n_outputs| addrID|        sum
 
@@ -206,7 +206,7 @@ input = input.map(lambda p: ((p[0][0]),(p[0][1],p[0][2],p[0][3],p[0][4],mk_list(
 #print(input.take(10))
 
 
-output = sql.read.parquet("s3a://max01bb/output_modify_"+date)
+output = sql.read.parquet("s3a://---"+date)
 
 output = output.rdd.map(lambda p: ((p[0]),(p[3],p[4])))
 output = output.reduceByKey(lambda a,b : a + b)
@@ -233,6 +233,6 @@ frame = frame.select("txID","blockID","year","month","day","Iaddr","Oaddr","Sum"
 
 frame.show()
 
-frame.repartition(1).write.parquet("s3a://max01bb/transaction_modify_"+date)
+frame.repartition(1).write.parquet("s3a://---"+date)
 
 print(datetime.fromtimestamp(time.time()))

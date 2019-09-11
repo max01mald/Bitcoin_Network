@@ -35,8 +35,8 @@ def context_spark():
 	sql = SQLContext(sc)
 	
 	hadoopConf = sc._jsc.hadoopConfiguration()
-	hadoopConf.set("fs.s3a.awsAccessKeyId", "AKIAXCVNOCMJCZTV7IWP")
-	hadoopConf.set("fs.s3a.awsSecretAccessKey", "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")
+	hadoopConf.set("fs.s3a.awsAccessKeyId", "---")
+	hadoopConf.set("fs.s3a.awsSecretAccessKey", "---")
 	hadoopConf.set("fs.s3a.endpoint", "s3.us-east-1.amazonaws.com")
 	hadoopConf.set("com.amazonaws.services.s3a.enableV4", "true")
 	hadoopConf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")

@@ -37,8 +37,8 @@ def context_spark():
 	sql = SQLContext(sc)
 	
 	hadoopConf = sc._jsc.hadoopConfiguration()
-	hadoopConf.set("fs.s3a.awsAccessKeyId", "AKIAXCVNOCMJCZTV7IWP")
-	hadoopConf.set("fs.s3a.awsSecretAccessKey", "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")
+	hadoopConf.set("fs.s3a.awsAccessKeyId", "---")
+	hadoopConf.set("fs.s3a.awsSecretAccessKey", "---")
 	hadoopConf.set("fs.s3a.endpoint", "s3.us-east-1.amazonaws.com")
 	hadoopConf.set("com.amazonaws.services.s3a.enableV4", "true")
 	hadoopConf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
@@ -92,7 +92,7 @@ SparkContext.setSystemProperty('spark.driver.memory','10g')
 sql = context_spark()
 spark = init_spark()
 
-trans = sql.read.parquet("s3a://max01bb/transaction_modify_"+date)
+trans = sql.read.parquet("s3a://---"+date)
 trans = trans.select("txID","blockID","Iaddr","Oaddr","year","month","day","Sum","Price")
 #trans.show()
 
@@ -147,7 +147,7 @@ frame = frame.select("txID","blockID","Iaddr","Oaddr","year","month","day","Sum"
 frame.show()
 
 
-frame.coalesce(1).write.parquet("s3a://max01bb/K_"+date)
+frame.coalesce(1).write.parquet("s3a://---"+date)
 
 '''
 s_y = spark.sparkContext.parallelize([sum_year]).map(lambda p: (1,(p)))
@@ -161,8 +161,8 @@ meta = spark.createDataFrame(meta)
 meta.show()
 '''
 date = "2015"
-trans = sql.read.parquet("s3a://max01bb/K_"+date)
-trans.coalesce(1).parquet("s3a://max01bb/K2_"+date)
+trans = sql.read.parquet("s3a://---"+date)
+trans.coalesce(1).parquet("s3a://---"+date)
 
 
 
